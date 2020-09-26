@@ -5,9 +5,9 @@ import Person from "./Person/Person";
 class App extends Component {
   state = {
     persons: [
-      { name: "ashish", age: 28 },
-      { name: "prince", age: 29 },
-      { name: "shubahm", age: 26 },
+      { id: "1", name: "ashish", age: 28 },
+      { id: "2", name: "prince", age: 29 },
+      { id: "3", name: "shubahm", age: 26 },
     ],
     otherState: "some other value",
     showPersons: false,
@@ -23,19 +23,31 @@ class App extends Component {
     });
   };
 
-  namechangeHandler = (event) => {
+  namechangeHandler = (event, id) => {
+    let personIndex = this.state.persons.findIndex(
+      (person) => id === person.id
+    );
+    const person = { ...this.state.persons[personIndex] };
+    person.name = event.target.value;
+    const persons = [...this.state.persons];
+
+    persons[personIndex] = person;
+
     this.setState({
-      persons: [
-        { name: "Ashish accenture", age: 28 },
-        { name: event.target.value, age: 29 },
-        { name: "Shubham pandey", age: 27 },
-      ],
+      persons: persons,
     });
   };
 
   tooglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
     this.setState({ showPersons: !doesShow });
+  };
+
+  deletePersonHandler = (index) => {
+    // do'nt mutate the orginal array, instead create a copy of it
+    const persons = [...this.state.persons];
+    persons.splice(index, 1);
+    this.setState({ persons: persons });
   };
 
   render() {
@@ -52,8 +64,16 @@ class App extends Component {
     if (this.state.showPersons) {
       persons = (
         <div>
-          {this.state.persons.map((person) => {
-            return <Person name={person.name} age={person.age}></Person>;
+          {this.state.persons.map((person, index) => {
+            return (
+              <Person
+                click={() => this.deletePersonHandler(index)}
+                name={person.name}
+                age={person.age}
+                key={person.id}
+                changed={(event) => this.namechangeHandler(event, person.id)}
+              ></Person>
+            );
           })}
         </div>
       );
