@@ -1,6 +1,6 @@
 import React from "react";
 import "./Person.css";
-import styled from "styled-components"
+import styled from "styled-components";
 
 const StyledDiv = styled.div`
   width: 60%;
@@ -11,7 +11,6 @@ const StyledDiv = styled.div`
   text-align: center;
 `;
 
-
 const Person = (props) => {
   return (
     <StyledDiv>
@@ -20,7 +19,7 @@ const Person = (props) => {
       </p>
       <p>{props.children}</p>
       <input type="text" onChange={props.changed} />
-      </StyledDiv>
+    </StyledDiv>
   );
 };
 
