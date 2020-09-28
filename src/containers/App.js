@@ -1,22 +1,9 @@
 import React, { Component } from "react";
 import "./App.css";
 import Person from "../Components/Persons/Person/Person";
-import styled from "styled-components";
+import Persons from "../Components/Persons/Persons";
+import Cockpit from "../Components/Persons/Cockpit/Cockpit";
 
-const StyledButton = styled.button`
-
-background-color: green,
-      color: white,
-      font: inherit,
-      border: 1px solid blue,
-      padding: 8px,
-      cursor: pointer,
-      &:hover {
-        background-color: yellow,
-        color: brown,
-
-
-`;
 class App extends Component {
   state = {
     persons: [
@@ -66,60 +53,25 @@ class App extends Component {
   };
 
   render() {
-    // const style = {
-    //   backgroundColor: "green",
-    //   color: "white",
-    //   font: "inherit",
-    //   border: "1px solid blue",
-    //   padding: "8px",
-    //   cursor: "pointer",
-    //   ":hover": {
-    //     backgroundColor: "yellow",
-    //     color: "brown",
-    //   },
-    // };
-
     let persons = null;
 
     if (this.state.showPersons) {
       persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            return (
-              <Person
-                click={() => this.deletePersonHandler(index)}
-                name={person.name}
-                age={person.age}
-                key={person.id}
-                changed={(event) => this.namechangeHandler(event, person.id)}
-              ></Person>
-            );
-          })}
-        </div>
+        <Persons
+          persons={this.state.persons}
+          clicked={this.deletePersonHandler}
+          changed={this.namechangeHandler}
+        />
       );
-      // style.backgroundColor = "red";
-      // style[":hover"] = {
-      //   backgroundColor: "lightred",
-      //   color: "black",
-      // };
-    }
-
-    let classes = [];
-    if (this.state.persons.length <= 2) {
-      classes.push("red");
-    }
-
-    if (this.state.persons.length <= 1) {
-      classes.push("bold");
     }
 
     return (
       <div className="App">
-        <h1>Hi, I'm a React App</h1>
-        <p className={classes.join(" ")}> This is really working!</p>
-        <StyledButton onClick={this.tooglePersonsHandler}>
-          Switch Name
-        </StyledButton>
+        <Cockpit
+          persons={this.state.persons}
+          click={this.tooglePersonsHandler}
+          appTitle = {this.props.appTitle}
+        />
 
         {[persons]}
       </div>
